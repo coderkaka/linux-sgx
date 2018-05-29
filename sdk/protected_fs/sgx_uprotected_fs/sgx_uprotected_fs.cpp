@@ -145,6 +145,31 @@ uint8_t u_sgxprotectedfs_check_if_file_exists(const char* filename)
 	return (stat(filename, &stat_st) == 0); 
 }
 
+#ifdef BATCH_RW
+typedef struct node_buf{
+        FILE* file;
+        uint64_t node_number;
+        uint8_t* buffer;
+        uint32_t node_size;
+}NodeBuf;
+void* u_sgxprotectedfs_fread_nodevector(void * nodebuf, uint32_t size){
+        NodeBuf * request = (NodeBuf*)nodebuf;
+        void * res = (void *)malloc(sizeof(int32_t) * size);
+        for(int i = 0; i < size; i++){
+                res[i] = u_sgxprotectedfs_fread_node(request[i].file,request[i].node_number, request[i].buffer, request[i].node_size);
+        }
+        return res;
+}
+void* u_sgxprotectedfs_fwrite_nodevector(void * nodebuf, uint32_t size){
+        NodeBuf * request = (NodeBuf*)nodebuf;
+        void * res = (void *)malloc(sizeof(int32_t) * size);
+        for(int i = 0; i < size; i++){
+                res[i] = u_sgxprotectedfs_fread_node(request[i].file,request[i].node_number, request[i].buffer, request[i].node_size);
+        }
+        return res;
+}
+#endif
+
 
 int32_t u_sgxprotectedfs_fread_node(void* f, uint64_t node_number, uint8_t* buffer, uint32_t node_size)
 {
