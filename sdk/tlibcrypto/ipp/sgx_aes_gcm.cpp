@@ -56,6 +56,11 @@ sgx_status_t sgx_rijndael128GCM_encrypt(const sgx_aes_gcm_128bit_key_t *p_key, c
     IppStatus error_code = ippStsNoErr;
     IppsAES_GCMState* pState = NULL;
     int ippStateSize = 0;
+#ifdef ENCRYPT_TEST
+    memcpy(p_dst,p_src,src_len);
+    return SGX_SUCCESS;
+#endif
+
 
     if ((p_key == NULL) || ((src_len > 0) && (p_dst == NULL)) || ((src_len > 0) && (p_src == NULL))
         || (p_out_mac == NULL) || (iv_len != SGX_AESGCM_IV_SIZE) || ((aad_len > 0) && (p_aad == NULL))
@@ -142,6 +147,11 @@ sgx_status_t sgx_rijndael128GCM_decrypt(const sgx_aes_gcm_128bit_key_t *p_key, c
     uint8_t l_tag[SGX_AESGCM_MAC_SIZE];
     IppsAES_GCMState* pState = NULL;
     int ippStateSize = 0;
+
+#ifdef ENCRYPT_TEST
+    memcpy(p_dst,p_src,src_len);
+    return SGX_SUCCESS;
+#endif
 
     if ((p_key == NULL) || ((src_len > 0) && (p_dst == NULL)) || ((src_len > 0) && (p_src == NULL))
         || (p_in_mac == NULL) || (iv_len != SGX_AESGCM_IV_SIZE) || ((aad_len > 0) && (p_aad == NULL))
