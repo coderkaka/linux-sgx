@@ -49,6 +49,17 @@
 #else
 #define DEBUG_PRINT(...)
 #endif
+ 
+#ifdef OCALL_COUNT
+int my_count = 0;
+#endif
+
+#ifdef OCALL_COUNT
+void u_sgxprotectedfs_pcount(const char* count){
+        printf("total ocall count : %d\n",my_count);
+        printf("for pass %s \n",count);
+}
+#endif
 
 
 void* u_sgxprotectedfs_exclusive_file_open(const char* filename, uint8_t read_only, int64_t* file_size, int32_t* error_code)
@@ -141,6 +152,10 @@ int32_t u_sgxprotectedfs_fread_node(void* f, uint64_t node_number, uint8_t* buff
 	uint64_t offset = node_number * node_size;
 	int result = 0;
 	size_t size = 0;
+ 
+#ifdef OCALL_COUNT
+        my_count++;
+#endif
 
 	if (file == NULL)
 	{
@@ -191,6 +206,10 @@ int32_t u_sgxprotectedfs_fwrite_node(void* f, uint64_t node_number, uint8_t* buf
 	uint64_t offset = node_number * node_size;
 	int result = 0;
 	size_t size = 0;
+
+#ifdef OCALL_COUNT
+        my_count++;
+#endif
 
 	if (file == NULL)
 	{
@@ -268,6 +287,10 @@ uint8_t u_sgxprotectedfs_fflush(void* f)
 {
 	FILE* file = (FILE*)f;
 	int result;
+
+#ifdef OCALL_COUNT
+        my_count++;
+#endif
 
 	if (file == NULL)
 	{
