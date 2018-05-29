@@ -71,6 +71,8 @@ CUR_DIR := $(realpath $(call parent-dir,$(lastword $(wordlist 2,$(words $(MAKEFI
 
 # turn on stack protector for SDK
 CC_BELOW_4_9 := $(shell expr "`$(CC) -dumpversion`" \< "4.9")
+#my option
+COMMON_FLAGS += $(TESTFLAGS)
 ifeq ($(CC_BELOW_4_9), 1)
     COMMON_FLAGS += -fstack-protector
 else
