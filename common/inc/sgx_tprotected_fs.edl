@@ -34,6 +34,11 @@ enclave {
 from "sgx_tae_service.edl" import *;
 
     untrusted {
+//my test
+		void   u_sgxprotectedfs_pcount([user_check] const char* count);
+		void *  u_sgxprotectedfs_fwrite_nodevector([user_check]void *nodebuf, uint32_t size);
+		 void *  u_sgxprotectedfs_fread_nodevector([user_check]void *nodebuf, uint32_t size);
+
 		void*   u_sgxprotectedfs_exclusive_file_open([in, string] const char* filename, uint8_t read_only, [out] int64_t* file_size, [out] int32_t* error_code);
 		uint8_t u_sgxprotectedfs_check_if_file_exists([in, string] const char* filename);
 		int32_t u_sgxprotectedfs_fread_node([user_check] void* f, uint64_t node_number, [out, size=node_size] uint8_t* buffer, uint32_t node_size);
